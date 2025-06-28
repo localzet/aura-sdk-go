@@ -1,4 +1,4 @@
-<h1 align="center"><a href="#"><img src="https://static.zorin.space/assets/media/logos/ZorinProjectsSP.svg" alt="Image"></a></h1>
+<p align="center"><a href="#"><img src="https://static.zorin.space/assets/media/logos/ZorinProjectsSP.svg" alt="Image"></a></p>
 
 <h1 align="center">Aura GO SDK</h1>
 
@@ -15,11 +15,6 @@
 ```bash
 go get github.com/localzet/aura-sdk-go@latest
 ````
-
----
-
-### Dependencies
-- `Go` (>=1.24)
 
 ## 🚀 Usage
 
