@@ -57,6 +57,7 @@ const (
 	SubscriptionTemplateControllerUpdateTemplateOperation          OperationName = "SubscriptionTemplateControllerUpdateTemplate"
 	SubscriptionsControllerGetAllSubscriptionsOperation            OperationName = "SubscriptionsControllerGetAllSubscriptions"
 	SubscriptionsControllerGetSubscriptionByUsernameOperation      OperationName = "SubscriptionsControllerGetSubscriptionByUsername"
+	SystemControllerGetAuraHealthOperation                         OperationName = "SystemControllerGetAuraHealth"
 	SystemControllerGetBandwidthStatsOperation                     OperationName = "SystemControllerGetBandwidthStats"
 	SystemControllerGetNodesStatisticsOperation                    OperationName = "SystemControllerGetNodesStatistics"
 	SystemControllerGetStatsOperation                              OperationName = "SystemControllerGetStats"
