@@ -16,10 +16,6 @@ func (s *ActivateAllInboundsResponseDtoResponse) setDefaults() {
 		val := ActivateAllInboundsResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
 	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
 }
 
 // setDefaults set default value of fields.
@@ -146,27 +142,7 @@ func (s *CreateUserRequestDto) setDefaults() {
 	}
 	{
 		val := CreateUserRequestDtoTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *CreateUserResponseDtoResponse) setDefaults() {
-	{
-		val := CreateUserResponseDtoResponseStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := CreateUserResponseDtoResponseTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
+		s.TrafficLimitStrategy = val
 	}
 }
 
@@ -184,10 +160,6 @@ func (s *DisableUserResponseDtoResponse) setDefaults() {
 		val := DisableUserResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
 	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
 }
 
 // setDefaults set default value of fields.
@@ -203,10 +175,6 @@ func (s *EnableUserResponseDtoResponse) setDefaults() {
 	{
 		val := EnableUserResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
 	}
 }
 
@@ -227,26 +195,6 @@ func (s *GetAllHostsResponseDtoResponseItem) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *GetAllUsersResponseDtoResponseUsersItem) setDefaults() {
-	{
-		val := GetAllUsersResponseDtoResponseUsersItemStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetAllUsersResponseDtoResponseUsersItemTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
 func (s *GetOneHostResponseDtoResponse) setDefaults() {
 	{
 		val := bool(false)
@@ -259,66 +207,6 @@ func (s *GetOneHostResponseDtoResponse) setDefaults() {
 	{
 		val := GetOneHostResponseDtoResponseSecurityLayer("DEFAULT")
 		s.SecurityLayer.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *GetUserByEmailResponseDtoResponseItem) setDefaults() {
-	{
-		val := GetUserByEmailResponseDtoResponseItemStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetUserByEmailResponseDtoResponseItemTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *GetUserByShortUuidResponseDtoResponse) setDefaults() {
-	{
-		val := GetUserByShortUuidResponseDtoResponseStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetUserByShortUuidResponseDtoResponseTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *GetUserBySubscriptionUuidResponseDtoResponse) setDefaults() {
-	{
-		val := GetUserBySubscriptionUuidResponseDtoResponseStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetUserBySubscriptionUuidResponseDtoResponseTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
 	}
 }
 
@@ -336,50 +224,6 @@ func (s *GetUserByTagResponseDtoResponseItem) setDefaults() {
 		val := GetUserByTagResponseDtoResponseItemTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
 	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *GetUserByTelegramIdResponseDtoResponseItem) setDefaults() {
-	{
-		val := GetUserByTelegramIdResponseDtoResponseItemStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetUserByTelegramIdResponseDtoResponseItemTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
-}
-
-// setDefaults set default value of fields.
-func (s *GetUserByUsernameResponseDtoResponse) setDefaults() {
-	{
-		val := GetUserByUsernameResponseDtoResponseStatus("ACTIVE")
-		s.Status.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.TrafficLimitBytes.SetTo(val)
-	}
-	{
-		val := GetUserByUsernameResponseDtoResponseTrafficLimitStrategy("NO_RESET")
-		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
 }
 
 // setDefaults set default value of fields.
@@ -395,10 +239,6 @@ func (s *GetUserByUuidResponseDtoResponse) setDefaults() {
 	{
 		val := GetUserByUuidResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
 	}
 }
 
@@ -416,10 +256,6 @@ func (s *ResetUserTrafficResponseDtoResponse) setDefaults() {
 		val := ResetUserTrafficResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
 	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
-	}
 }
 
 // setDefaults set default value of fields.
@@ -435,10 +271,6 @@ func (s *RevokeUserSubscriptionResponseDtoResponse) setDefaults() {
 	{
 		val := RevokeUserSubscriptionResponseDtoResponseTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
 	}
 }
 
@@ -503,9 +335,9 @@ func (s *UpdateUserRequestDto) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *UpdateUserResponseDtoResponse) setDefaults() {
+func (s *UserDto) setDefaults() {
 	{
-		val := UpdateUserResponseDtoResponseStatus("ACTIVE")
+		val := UserDtoStatus("ACTIVE")
 		s.Status.SetTo(val)
 	}
 	{
@@ -513,11 +345,7 @@ func (s *UpdateUserResponseDtoResponse) setDefaults() {
 		s.TrafficLimitBytes.SetTo(val)
 	}
 	{
-		val := UpdateUserResponseDtoResponseTrafficLimitStrategy("NO_RESET")
+		val := UserDtoTrafficLimitStrategy("NO_RESET")
 		s.TrafficLimitStrategy.SetTo(val)
-	}
-	{
-		val := int(0)
-		s.LastTriggeredThreshold.SetTo(val)
 	}
 }

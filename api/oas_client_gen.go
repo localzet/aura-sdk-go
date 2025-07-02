@@ -381,12 +381,6 @@ type Invoker interface {
 	//
 	// GET /api/subscriptions/by-username/{username}
 	SubscriptionsControllerGetSubscriptionByUsername(ctx context.Context, params SubscriptionsControllerGetSubscriptionByUsernameParams, options ...RequestOption) (SubscriptionsControllerGetSubscriptionByUsernameRes, error)
-	// SystemControllerGetAuraHealth invokes SystemController_getAuraHealth operation.
-	//
-	// Get Aura Health.
-	//
-	// GET /api/system/health
-	SystemControllerGetAuraHealth(ctx context.Context, options ...RequestOption) (*GetAuraHealthResponseDto, error)
 	// SystemControllerGetBandwidthStats invokes SystemController_getBandwidthStats operation.
 	//
 	// Get Bandwidth Stats.
@@ -464,7 +458,7 @@ type Invoker interface {
 	// Create a new user.
 	//
 	// POST /api/users
-	UsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, options ...RequestOption) (*CreateUserResponseDto, error)
+	UsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, options ...RequestOption) (*UserResponseDto, error)
 	// UsersControllerDeleteUser invokes UsersController_deleteUser operation.
 	//
 	// Delete user.
@@ -548,13 +542,13 @@ type Invoker interface {
 	// Revoke user subscription.
 	//
 	// POST /api/users/{uuid}/actions/revoke
-	UsersControllerRevokeUserSubscription(ctx context.Context, request *RevokeUserSubscriptionBodyDto, params UsersControllerRevokeUserSubscriptionParams, options ...RequestOption) (UsersControllerRevokeUserSubscriptionRes, error)
+	UsersControllerRevokeUserSubscription(ctx context.Context, params UsersControllerRevokeUserSubscriptionParams, options ...RequestOption) (UsersControllerRevokeUserSubscriptionRes, error)
 	// UsersControllerUpdateUser invokes UsersController_updateUser operation.
 	//
 	// Update a user.
 	//
 	// PATCH /api/users
-	UsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, options ...RequestOption) (*UpdateUserResponseDto, error)
+	UsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, options ...RequestOption) (*UserResponseDto, error)
 	// UsersStatsControllerGetUserUsageByRange invokes UsersStatsController_getUserUsageByRange operation.
 	//
 	// Get user usage by range.
@@ -5421,93 +5415,6 @@ func (c *Client) sendSubscriptionsControllerGetSubscriptionByUsername(ctx contex
 	return result, nil
 }
 
-// SystemControllerGetAuraHealth invokes SystemController_getAuraHealth operation.
-//
-// Get Aura Health.
-//
-// GET /api/system/health
-func (c *Client) SystemControllerGetAuraHealth(ctx context.Context, options ...RequestOption) (*GetAuraHealthResponseDto, error) {
-	res, err := c.sendSystemControllerGetAuraHealth(ctx, options...)
-	return res, err
-}
-
-func (c *Client) sendSystemControllerGetAuraHealth(ctx context.Context, requestOptions ...RequestOption) (res *GetAuraHealthResponseDto, err error) {
-
-	var reqCfg requestConfig
-	reqCfg.setDefaults(c.baseClient)
-	for _, o := range requestOptions {
-		o(&reqCfg)
-	}
-
-	u := c.serverURL
-	if override := reqCfg.ServerURL; override != nil {
-		u = override
-	}
-	u = uri.Clone(u)
-	var pathParts [1]string
-	pathParts[0] = "/api/system/health"
-	uri.AddPathParts(u, pathParts[:]...)
-
-	r, err := ht.NewRequest(ctx, "GET", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-
-			switch err := c.securityAuthorization(ctx, SystemControllerGetAuraHealthOperation, r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"Authorization\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	if err := reqCfg.onRequest(r); err != nil {
-		return res, errors.Wrap(err, "edit request")
-	}
-
-	resp, err := reqCfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	if err := reqCfg.onResponse(resp); err != nil {
-		return res, errors.Wrap(err, "edit response")
-	}
-
-	result, err := decodeSystemControllerGetAuraHealthResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
 // SystemControllerGetBandwidthStats invokes SystemController_getBandwidthStats operation.
 //
 // Get Bandwidth Stats.
@@ -6660,12 +6567,12 @@ func (c *Client) sendUsersControllerActivateAllInbounds(ctx context.Context, par
 // Create a new user.
 //
 // POST /api/users
-func (c *Client) UsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, options ...RequestOption) (*CreateUserResponseDto, error) {
+func (c *Client) UsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, options ...RequestOption) (*UserResponseDto, error) {
 	res, err := c.sendUsersControllerCreateUser(ctx, request, options...)
 	return res, err
 }
 
-func (c *Client) sendUsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, requestOptions ...RequestOption) (res *CreateUserResponseDto, err error) {
+func (c *Client) sendUsersControllerCreateUser(ctx context.Context, request *CreateUserRequestDto, requestOptions ...RequestOption) (res *UserResponseDto, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -8128,21 +8035,12 @@ func (c *Client) sendUsersControllerResetUserTraffic(ctx context.Context, params
 // Revoke user subscription.
 //
 // POST /api/users/{uuid}/actions/revoke
-func (c *Client) UsersControllerRevokeUserSubscription(ctx context.Context, request *RevokeUserSubscriptionBodyDto, params UsersControllerRevokeUserSubscriptionParams, options ...RequestOption) (UsersControllerRevokeUserSubscriptionRes, error) {
-	res, err := c.sendUsersControllerRevokeUserSubscription(ctx, request, params, options...)
+func (c *Client) UsersControllerRevokeUserSubscription(ctx context.Context, params UsersControllerRevokeUserSubscriptionParams, options ...RequestOption) (UsersControllerRevokeUserSubscriptionRes, error) {
+	res, err := c.sendUsersControllerRevokeUserSubscription(ctx, params, options...)
 	return res, err
 }
 
-func (c *Client) sendUsersControllerRevokeUserSubscription(ctx context.Context, request *RevokeUserSubscriptionBodyDto, params UsersControllerRevokeUserSubscriptionParams, requestOptions ...RequestOption) (res UsersControllerRevokeUserSubscriptionRes, err error) {
-	// Validate request before sending.
-	if err := func() error {
-		if err := request.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		return res, errors.Wrap(err, "validate")
-	}
+func (c *Client) sendUsersControllerRevokeUserSubscription(ctx context.Context, params UsersControllerRevokeUserSubscriptionParams, requestOptions ...RequestOption) (res UsersControllerRevokeUserSubscriptionRes, err error) {
 
 	var reqCfg requestConfig
 	reqCfg.setDefaults(c.baseClient)
@@ -8181,9 +8079,6 @@ func (c *Client) sendUsersControllerRevokeUserSubscription(ctx context.Context, 
 	r, err := ht.NewRequest(ctx, "POST", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
-	}
-	if err := encodeUsersControllerRevokeUserSubscriptionRequest(request, r); err != nil {
-		return res, errors.Wrap(err, "encode request")
 	}
 
 	{
@@ -8246,12 +8141,12 @@ func (c *Client) sendUsersControllerRevokeUserSubscription(ctx context.Context, 
 // Update a user.
 //
 // PATCH /api/users
-func (c *Client) UsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, options ...RequestOption) (*UpdateUserResponseDto, error) {
+func (c *Client) UsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, options ...RequestOption) (*UserResponseDto, error) {
 	res, err := c.sendUsersControllerUpdateUser(ctx, request, options...)
 	return res, err
 }
 
-func (c *Client) sendUsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, requestOptions ...RequestOption) (res *UpdateUserResponseDto, err error) {
+func (c *Client) sendUsersControllerUpdateUser(ctx context.Context, request *UpdateUserRequestDto, requestOptions ...RequestOption) (res *UserResponseDto, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {

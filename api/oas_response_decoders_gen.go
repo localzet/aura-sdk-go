@@ -2456,56 +2456,6 @@ func decodeSubscriptionsControllerGetSubscriptionByUsernameResponse(resp *http.R
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeSystemControllerGetAuraHealthResponse(resp *http.Response) (res *GetAuraHealthResponseDto, _ error) {
-	switch resp.StatusCode {
-	case 200:
-		// Code 200.
-		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-		if err != nil {
-			return res, errors.Wrap(err, "parse media type")
-		}
-		switch {
-		case ct == "application/json":
-			buf, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return res, err
-			}
-			d := jx.DecodeBytes(buf)
-
-			var response GetAuraHealthResponseDto
-			if err := func() error {
-				if err := response.Decode(d); err != nil {
-					return err
-				}
-				if err := d.Skip(); err != io.EOF {
-					return errors.New("unexpected trailing data")
-				}
-				return nil
-			}(); err != nil {
-				err = &ogenerrors.DecodeBodyError{
-					ContentType: ct,
-					Body:        buf,
-					Err:         err,
-				}
-				return res, err
-			}
-			// Validate response.
-			if err := func() error {
-				if err := response.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return res, errors.Wrap(err, "validate")
-			}
-			return &response, nil
-		default:
-			return res, validate.InvalidContentType(ct)
-		}
-	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
-}
-
 func decodeSystemControllerGetBandwidthStatsResponse(resp *http.Response) (res *GetBandwidthStatsResponseDto, _ error) {
 	switch resp.StatusCode {
 	case 200:
@@ -3082,7 +3032,7 @@ func decodeUsersControllerActivateAllInboundsResponse(resp *http.Response) (res 
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeUsersControllerCreateUserResponse(resp *http.Response) (res *CreateUserResponseDto, _ error) {
+func decodeUsersControllerCreateUserResponse(resp *http.Response) (res *UserResponseDto, _ error) {
 	switch resp.StatusCode {
 	case 201:
 		// Code 201.
@@ -3098,7 +3048,7 @@ func decodeUsersControllerCreateUserResponse(resp *http.Response) (res *CreateUs
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CreateUserResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3398,7 +3348,7 @@ func decodeUsersControllerGetUserByShortUuidResponse(resp *http.Response) (res U
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetUserByShortUuidResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3451,7 +3401,7 @@ func decodeUsersControllerGetUserBySubscriptionUuidResponse(resp *http.Response)
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetUserBySubscriptionUuidResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3504,7 +3454,7 @@ func decodeUsersControllerGetUserByTelegramIdResponse(resp *http.Response) (res 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetUserByTelegramIdResponseDto
+			var response UsersDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3557,7 +3507,7 @@ func decodeUsersControllerGetUserByUsernameResponse(resp *http.Response) (res Us
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetUserByUsernameResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3663,7 +3613,7 @@ func decodeUsersControllerGetUsersByEmailResponse(resp *http.Response) (res User
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetUserByEmailResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3859,7 +3809,7 @@ func decodeUsersControllerRevokeUserSubscriptionResponse(resp *http.Response) (r
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeUsersControllerUpdateUserResponse(resp *http.Response) (res *UpdateUserResponseDto, _ error) {
+func decodeUsersControllerUpdateUserResponse(resp *http.Response) (res *UserResponseDto, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -3875,7 +3825,7 @@ func decodeUsersControllerUpdateUserResponse(resp *http.Response) (res *UpdateUs
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response UpdateUserResponseDto
+			var response UserResponseDto
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
